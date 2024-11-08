@@ -2,6 +2,12 @@
 
 {% block body %}
     <h2>Active Listings</h2>
+    {% if messages %}
+        {% for message in messages %}
+            {{ message}}
+        {% endfor %}
+    {% endif %}
+
     <br>
         <ul>
             {% for listing in listings %}
