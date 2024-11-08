@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.utils import timezone
 
-from .models import User, Listings, Bids, Comments
+from .models import User, Listings, Bids, Comments, Watchlist
 from .forms import ListingsForm
 
 
@@ -14,7 +14,6 @@ def index(request):
     return render(request, "auctions/index.html", {
         "listings": listings
     })
-
 
 def login_view(request):
     if request.method == "POST":
@@ -35,11 +34,9 @@ def login_view(request):
     else:
         return render(request, "auctions/login.html")
 
-
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
-
 
 def register(request):
     if request.method == "POST":
@@ -87,12 +84,26 @@ def list_product(request):
     return render(request, "auctions/list_product.html", context)
 
 def listing_page(request, listing_id):
-
     try:    
         listing = Listings.objects.get(id=listing_id)
     except Listings.DoesNotExist:
         return render(request, "auctions/not_found.hmtl")
-    print(listing)
+    
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            item_id = request.POST.get('listing_id')
+            watchlist = Watchlist(item=item_id, watchlist_owner=request.user)
+            watchlist.save()
+
     return render(request, "auctions/listing_page.html", {
         "listing": listing
+    })
+
+
+def watchlist(request):
+    if request.user.is_authenticated():
+        watchlist = Watchlist.objects.filter(watchlist_owner=request.user)
+
+    return render(request, "auctions/watchlist.html", {
+        "watchlist": watchlist
     })

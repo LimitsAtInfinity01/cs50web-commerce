@@ -14,4 +14,10 @@
         <li>Image: <a href="{{ listing.image_url }}">Image URL</a></li>
     {% endif %}
 
+    <form action="{% url 'listing_page' listing.id %}" method="POST">
+        {% csrf_token %}
+        <input type="text" hidden="true" value="{{ listing.id }}" name="listing_id">
+        <button type="submit" >Add to watchlist</button>
+    </form>
+
 {% endblock %}

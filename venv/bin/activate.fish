@@ -33,7 +33,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/home/limitsatinfinity/Documents/Code/commerce/venv"
+set -gx VIRTUAL_ENV "/home/limitsatinfinity/Documents/code/commerce/cs50web-commerce/venv"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH

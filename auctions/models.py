@@ -21,3 +21,8 @@ class Comments(models.Model):
     text = models.CharField(max_length=1024)
     commenter = models.ForeignKey(User, on_delete=models.CASCADE)
     posted_date = models.DateTimeField()
+
+class Watchlist(models.Model):
+    watchlist_owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    item = models.ForeignKey(Listings, on_delete=models.CASCADE)
+    added_at = models.DateTimeField(auto_now_add=True)
