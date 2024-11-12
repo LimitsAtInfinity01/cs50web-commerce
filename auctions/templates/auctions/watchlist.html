@@ -6,14 +6,16 @@
 
 {% block body %}
     {% for item in watchlist %}
-        <p>Titulo: {{ item.item.title }}</p>
-        <p>Description: {{ item.item.description }}</p>
-        <p>Price: {{ item.item.price }}</p>
-        {% if item.item.image_url %}
-            <p>Image URL: {{ item.item.image_url }}</p>
+        {% if item.item.open %}
+            <p>Titulo: {{ item.item.title }}</p>
+            <p>Description: {{ item.item.description }}</p>
+            <p>Price: {{ item.item.price }}</p>
+            {% if item.item.image_url %}
+                <p>Image URL: {{ item.item.image_url }}</p>
+            {% endif %}
+            <p>Added on: {{ item.added_at }}</p>
+            <br>
         {% endif %}
-        <p>Added on: {{ item.added_at }}</p>
-        <br>
     {% endfor %}
 
     {% if messages %}

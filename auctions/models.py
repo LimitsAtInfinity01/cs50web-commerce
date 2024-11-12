@@ -7,13 +7,15 @@ class User(AbstractUser):
 
 class Listings(models.Model):
     title = models.CharField(max_length=64)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.CharField(max_length=128)
     price = models.FloatField()
     posted_date = models.DateTimeField()
     image_url = models.URLField(blank=True, null=True)
+    open = models.BooleanField(default=True)
 
 class Bids(models.Model):
-    bids = models.IntegerField()
+    bid = models.IntegerField()
     bidder = models.ForeignKey(User, on_delete=models.CASCADE)
     listing = models.ForeignKey(Listings, on_delete=models.CASCADE)
 
@@ -26,3 +28,7 @@ class Watchlist(models.Model):
     watchlist_owner = models.ForeignKey(User, on_delete=models.CASCADE)
     item = models.ForeignKey(Listings, on_delete=models.CASCADE)
     added_at = models.DateTimeField(auto_now_add=True)
+
+class Winners(models.Model):
+    winner = models.ForeignKey(User, on_delete=models.CASCADE)
+    listing_won = models.ForeignKey(Listings, on_delete=models.CASCADE)

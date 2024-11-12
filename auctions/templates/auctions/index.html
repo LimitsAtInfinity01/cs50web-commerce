@@ -2,15 +2,11 @@
 
 {% block body %}
     <h2>Active Listings</h2>
-    {% if messages %}
-        {% for message in messages %}
-            {{ message}}
-        {% endfor %}
-    {% endif %}
-
     <br>
+        {% if listings %}
         <ul>
             {% for listing in listings %}
+                {% if listing.open %}
                 <h3><a href="{% url 'listing_page' listing.id %}">{{ listing.title }}</a></h3>
                 <li>Description: {{ listing.description }}</li>
                 <li>Price: {{ listing.price }}</li>
@@ -19,6 +15,8 @@
                     <li>Image: <a href="{{ listing.image_url }}">Image URL</a></li>
                 {% endif %}
                 <br>
+                {% endif %}
             {% endfor %}
         </ul>
+        {% endif %}
 {% endblock %}

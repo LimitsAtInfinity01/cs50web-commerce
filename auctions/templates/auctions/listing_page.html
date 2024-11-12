@@ -5,27 +5,54 @@
 {% endblock %}
 
 {% block body %}
-
-    <h3>{{ listing.title }}</h3>
-    <li>Description: {{ listing.description }}</li>
-    <li>Price: {{ listing.price }}</li>
-    <li>Date Posted: {{ listing.posted_date }}</li>
-    {% if listing.image_url %}
-        <li>Image: <a href="{{ listing.image_url }}">Image URL</a></li>
+    {% if messages %}
+        {% for message in messages %}
+            {{ message}}
+        {% endfor %}
     {% endif %}
-    <br>
-    {% if in_list %}
-        <form action="{% url 'listing_page' listing.id %}" method="POST">
-            {% csrf_token %}
-            <input type="text" hidden="true" value="{{ listing.id }}" name="listing_id">
-            <button type="submit" name="action" value="remove">Remove</button>        
-        </form>
+
+    {% if not winner %}
+        <h3>{{ listing.title }}</h3>
+        <li>Description: {{ listing.description }}</li>
+        <li>Price: {{ listing.price }}</li>
+        <li>Date Posted: {{ listing.posted_date }}</li>
+        <li>Listed by: {{ listing.owner }}</li>
+        {% if listing.image_url %}
+            <li>Image: <a href="{{ listing.image_url }}">Image URL</a></li>
+        {% endif %}
+        <br>
+        {% if in_list %}
+            <form action="{% url 'listing_page' listing.id %}" method="POST">
+                {% csrf_token %}
+                <input type="text" hidden="true" value="{{ listing.id }}" name="listing_id">
+                <button type="submit" name="action" value="remove">Remove</button>        
+            </form>
+        {% else %}
+            <form action="{% url 'listing_page' listing.id %}" method="POST">
+                {% csrf_token %}
+                <input type="text" hidden="true" value="{{ listing.id }}" name="listing_id">
+                <button type="submit" name="action" value="add">Add to Watchlist</button>
+            </form>
+        {% endif %}
+        <br>
+            <form action="{% url 'listing_page' listing.id %}" method="POST">
+                {% csrf_token %}
+                <p> <strong>Note: Your bid must be higher than current price</strong></p>
+                <label for="bid">Bid:</label>
+                <input type="number" name="bid" placeholder="Place your bet here">
+                <input type="submit" name="to_bid" value="bid">
+            </form>
+
+        <br>
+        {% if owner == user and user.is_authenticated %}
+            <form action="{% url 'listing_page' listing.id %}" method="POST">
+                {% csrf_token %}
+                <p>You can close the auction</p>
+                <button type="submit" name="to_close" value="close">Close</button>
+            </form>
+        {% endif %}
     {% else %}
-        <form action="{% url 'listing_page' listing.id %}" method="POST">
-            {% csrf_token %}
-            <input type="text" hidden="true" value="{{ listing.id }}" name="listing_id">
-            <button type="submit" name="action" value="add">Add to Watchlist</button>
-        </form>
+        <h1>Auction Closed!</h1>
     {% endif %}
 
 {% endblock %}
